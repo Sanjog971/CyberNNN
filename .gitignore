@@ -1,0 +1,25 @@
+# Python environment and caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.log
+
+# Data: large, and governed by the dataset's own terms.
+# See docs/dataset.md for how to download it.
+data/raw/
+data/processed/
+data/test_uploads/
+
+# Toy models from the Phase 3 tutorials (the real model files are kept)
+models/mlp_xor.pt
+models/mlp_xor_best.pt
+
+# Editor and OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Streamlit local secrets (none are used, but never commit them)
+.streamlit/secrets.toml

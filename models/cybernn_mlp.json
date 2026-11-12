@@ -1,0 +1,12 @@
+{
+  "n_features": 66,
+  "hidden": [
+    64,
+    32
+  ],
+  "preprocessor": "models/preprocessor.json",
+  "seed": 42,
+  "best_epoch": 24,
+  "pos_weight": 45.095848083496094,
+  "threshold_selected_on_validation": 0.8599999999999999
+}

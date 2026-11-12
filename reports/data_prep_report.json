@@ -1,0 +1,11 @@
+{
+  "rows_in": 445909,
+  "duplicate_columns_dropped": [
+    "Fwd Header Length.1"
+  ],
+  "duplicate_rows_removed": 24065,
+  "rows_sharing_features_with_another_label": 0,
+  "infinite_values_replaced": 275,
+  "rows_with_missing_values": 218,
+  "rows_out": 421844
+}
