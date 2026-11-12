@@ -120,7 +120,7 @@ About 8 ms per 1,000 flows end to end (preprocessing plus scoring) on a CPU. Sco
 - **Bad files:** an empty file, an unparseable file and a header-only file each give a clear message without a crash.
 - **Formula protection:** a flow labeled `=1+1` appears in the export as `'=1+1`, and no other cell in that file changed.
 - **Fingerprints:** the file, model and preprocessor SHA-256 values shown by the dashboard match values computed independently with `Get-FileHash`.
-- **Automated tests:** 65 pytest tests pass. The dashboard page itself is checked by hand, not automatically.
+- **Automated tests:** 74 pytest tests pass. The dashboard page itself is checked by hand, not automatically.
 
 ## What this evaluation cannot tell us
 

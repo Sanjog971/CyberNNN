@@ -51,8 +51,9 @@ flowchart LR
 | `src/cybernn/validation.py` | Validate uploads, count repairs, read ground-truth labels | `tests/test_validation.py` |
 | `src/cybernn/report.py` | Sanitized exports, Markdown summary, SHA-256 | `tests/test_report.py` |
 | `app/cybernn_app.py` | The Streamlit page that wires the modules together | Checked by hand in the browser; not automated |
+| `app/prediction_api.py` | Authenticated FastAPI inference, schema and structured validation errors | `tests/test_api.py` |
 
-There are 65 tests in total. The scripts in `scripts/` call these modules (`train_cybernn.py` also contains its own copy of the training loop) and are not unit-tested.
+There are 74 tests in total. The scripts in `scripts/` call these modules (`train_cybernn.py` also contains its own copy of the training loop) and are not unit-tested.
 
 ## Artifacts
 
@@ -69,6 +70,8 @@ There are 65 tests in total. The scripts in `scripts/` call these modules (`trai
 | Boundary | Risk | Control |
 |---|---|---|
 | Uploaded CSV enters the dashboard | Malformed, oversized or wrong-schema files | `validation.py`: clear errors, a 500,000-row limit, a required-column check, numeric coercion with every repair reported |
+| Client sends records to the prediction API | Unauthorized or malformed requests, oversized batches | `/predict` requires a constant-time checked API key from `CYBERNN_API_KEY`, validates feature presence and thresholds, and caps batches at 1,000 flows; input errors use structured JSON |
+| Prediction API is exposed beyond localhost | Key interception or unbounded requests | Local run command binds to loopback; deployments should use HTTPS, secret management, network restrictions, request-size limits and rate limits |
 | Exported CSV is opened in a spreadsheet | Text such as `=HYPERLINK(...)` runs as a formula | `report.py`: cells and column names beginning with `=`, `+`, `-` or `@` get a leading apostrophe |
 | Model and preprocessor files are loaded from disk | A tampered file that runs code or feeds bad numbers | Preprocessing is JSON and validated on load; weights are loaded with `weights_only=True` |
 | The dashboard listens on a network port | Other machines reaching it | Started with `--server.address localhost` |
@@ -85,4 +88,4 @@ There are 65 tests in total. The scripts in `scripts/` call these modules (`trai
 
 ## Not built yet
 
-A FastAPI prediction service, live traffic capture, SIEM integration and an automated retraining pipeline.
+Live traffic capture, SIEM integration and an automated retraining pipeline. See [the prediction API guide](api.md) for the implemented FastAPI service and its limitations.

@@ -10,8 +10,8 @@ An AI-assisted network intrusion detection prototype. A small neural network (a 
 - Cleans the data without leaking test information: exact duplicates are removed before splitting, and every learned preprocessing step is fitted on the training split only.
 - Trains a PyTorch MLP (66 -> 64 -> 32 -> 1, 6,401 parameters) on CPU and compares it with logistic regression and a random forest.
 - Evaluates honestly: a test set kept sealed until the final evaluation, a held-out attack type, and two other days of the dataset the model never saw.
-- Serves a Streamlit dashboard with upload validation, an adjustable alert threshold, a score chart, a table of the most suspicious flows, metrics and a confusion matrix when the file has labels, and exports (a flagged-flows CSV and a Markdown summary with SHA-256 fingerprints of the input and the model).
-- Ships with 65 automated tests (pytest).
+- Serves a Streamlit dashboard and an optional API for authenticated, validated batch predictions, with structured errors.
+- Ships with 74 automated tests (pytest).
 
 ## Results at a glance
 
@@ -102,7 +102,16 @@ python -m streamlit run app\cybernn_app.py --server.address localhost --browser.
 
 Then open http://localhost:8501 and upload a CSV, for example `data\processed\test.csv`. Binding to `localhost` keeps the app reachable only from your own PC.
 
-### 4. Run the tests
+### 4. Run the prediction API
+
+The API uses a separate environment-based key; it does not use or store a GitHub token. See [the API guide](docs/api.md) for key setup, request schema, and deployment cautions.
+
+```
+$env:CYBERNN_API_KEY = (python -c "import secrets; print(secrets.token_urlsafe(32))")
+python -m uvicorn app.prediction_api:app --host 127.0.0.1 --port 8000
+```
+
+### 5. Run the tests
 
 ```
 python -m pytest -q
@@ -111,10 +120,10 @@ python -m pytest -q
 ## Project layout
 
 ```
-app\            Streamlit dashboard (cybernn_app.py)
+app\            Streamlit dashboard and FastAPI prediction service
 src\cybernn\    data.py, preprocessing.py, model.py, training.py, evaluation.py, validation.py, report.py
 scripts\        pipeline scripts above, plus early learning exercises (one_neuron.py, gradient_descent.py, ...)
-tests\          65 pytest tests
+tests\          74 pytest tests
 models\         trained MLP (cybernn_mlp.pt + .json) and preprocessing (preprocessor.json)
 reports\        loss curves, test confusion matrix, final_test_results.json
 data\           not tracked: raw downloads and generated splits
@@ -150,9 +159,9 @@ CIC-IDS2017 is published by the Canadian Institute for Cybersecurity. Its page a
 - [Model card](docs/model_card.md): what the model is, how it was trained, where it fails
 - [Evaluation](docs/evaluation.md): every result in one place
 - [Limitations and failure cases](docs/limitations.md): ranked, with evidence
+- [Prediction API](docs/api.md): authenticated batch scoring, request format, and deployment cautions
 ## Roadmap
 
-- A FastAPI prediction service with input validation, structured errors and access controls
 - Training on several attack families and evaluating on a held-out day
 - A benign-only model (for example an autoencoder) for unseen attacks
 - The secondary UNSW-NB15 dataset

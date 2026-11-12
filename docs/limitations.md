@@ -16,7 +16,7 @@ Ranked by how much they should affect your trust in CyberNN. Each item says what
 | 8 | **One training run, no confidence intervals** | Seed 42 only; validation loss ranged from 0.032 to 0.059 between epochs; differences of a few flows are not meaningful | Repeat with several seeds and report the spread |
 | 9 | **Hidden proxies for the port may exist** | The port is excluded, but other features may fingerprint the protocol. Not tested | Compare against a model trained with protocol-neutral features |
 | 10 | **No test against evasion or drift** | Adversarial robustness and changing traffic over time were not evaluated | Adversarial testing; time-ordered evaluation; scheduled retraining |
-| 11 | **Operational scope is small** | The dashboard is local and single-user (bound to localhost, no login), refuses files over 500,000 rows, and keeps no audit log beyond the exports | Authentication and logging before any shared deployment |
+| 11 | **Operational scope is small** | The dashboard is local and single-user (bound to localhost, no login); the API is loopback-only by default and uses one shared key. Neither keeps an audit log | Full identity/authorization, audit logging and monitoring before any shared deployment |
 
 ## Concrete failure cases
 
@@ -45,8 +45,8 @@ Ranked by how much they should affect your trust in CyberNN. Each item says what
 2. Evaluate on a held-out day and on an attack family the model has not seen.
 3. Choose the threshold against a real alert budget, and measure the false-alarm rate on that network.
 4. Repeat training with several seeds and report the spread.
-5. Add authentication, logging and monitoring, and keep a human in the loop for every decision.
+5. Add full identity/authorization, audit logging and monitoring (the API currently uses a shared key only), and keep a human in the loop for every decision.
 
 ## Not done in this project
 
-A FastAPI prediction service, the UNSW-NB15 dataset, the other days of CIC-IDS2017 (Wednesday, Thursday and the rest of Friday), multiple seeds, a benign-only model for unseen attacks, and adversarial testing.
+The UNSW-NB15 dataset, the other days of CIC-IDS2017 (Wednesday, Thursday and the rest of Friday), multiple seeds, a benign-only model for unseen attacks, and adversarial testing.
